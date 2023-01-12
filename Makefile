@@ -1,12 +1,17 @@
-playlife: lifefunc.o playlife.o
-	gcc lifefunc.o playlife.o -o playlife
+CMP = gcc
+MAIN = playlife
+FUNC = lifefunc
+EXEC = playlife
 
-lifefunc.o: lifefunc.c lifefunc.h
-	gcc -c lifefunc.c -o lifefunc.o -std=c11 -D_XOPEN_SOURCE=600 -D_POSIX_C_SOURCE=200112L
+$(EXEC): $(FUNC).o $(MAIN).o 
+	$(CMP) $(FUNC).o $(MAIN).o -lm -o $(EXEC)
 
-playlife.o: playlife.c lifefunc.h
-	gcc -c playlife.c -o playlife.o -std=c11
+$(FUNC).o: $(FUNC).c $(FUNC).h 
+	$(CMP) -c $(FUNC).c -o $(FUNC).o -std=c11 -D_XOPEN_SOURCE=600 -D_POSIX_C_SOURCE=200112L
+
+$(MAIN).o: $(MAIN).c $(FUNC).h
+	$(CMP) -c $(MAIN).c -o $(MAIN).o -std=c11
 
 clean:
 	rm *.o
-	rm playlife
+	rm $(EXEC)
